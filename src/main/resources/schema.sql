@@ -121,3 +121,92 @@ comment on column users.email is 'Адрес электронной почты';
 comment on column users.login is 'Логин пользователя';
 comment on column users.name is 'Имя пользователя';
 comment on column users.birthday is 'Дата рождения';
+
+
+-- students definition
+
+-- Drop table
+
+-- DROP TABLE students;
+
+create TABLE IF NOT EXISTS students (
+	student_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идетификатор
+	login varchar(50) NOT NULL, -- Логин
+	full_name varchar(250) NOT NULL, -- Полное имя
+	email varchar(50) NOT NULL, -- Эл.почта
+	datebirth date NULL, -- Дата рождения
+	gender int4 NOT NULL DEFAULT 0, -- Пол: 0-не задан; 1-муж; 2-жен
+	CONSTRAINT students_email_uk UNIQUE (email),
+	CONSTRAINT students_login_uk UNIQUE (login),
+	CONSTRAINT students_pk PRIMARY KEY (student_id)
+);
+COMMENT ON TABLE students IS 'Участник тестирования';
+
+-- Column comments
+
+COMMENT ON COLUMN students.student_id IS 'Идетификатор';
+COMMENT ON COLUMN students.login IS 'Логин';
+COMMENT ON COLUMN students.full_name IS 'Полное имя';
+COMMENT ON COLUMN students.email IS 'Эл.почта';
+COMMENT ON COLUMN students.datebirth IS 'Дата рождения';
+COMMENT ON COLUMN students.gender IS 'Пол: 0-не задан; 1-муж; 2-жен';
+
+
+-- testquestion definition
+
+-- Drop table
+
+-- DROP TABLE testquestion;
+
+create TABLE IF NOT EXISTS testquestion (
+	testquestion_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идентификатор вопроса в тесте
+	test_id int4 NOT NULL, -- Идентификатор теста
+	question_id int4 NOT NULL, -- Идентификатор вопроса
+	sign_right bool NOT NULL DEFAULT false, -- На вапрос дан правильный ответ
+	CONSTRAINT testquestion_pk PRIMARY KEY (testquestion_id)
+);
+COMMENT ON TABLE testquestion IS 'Вопросы в тесте';
+
+-- Column comments
+
+COMMENT ON COLUMN testquestion.testquestion_id IS 'Идентификатор вопроса в тесте';
+COMMENT ON COLUMN testquestion.test_id IS 'Идентификатор теста';
+COMMENT ON COLUMN testquestion.question_id IS 'Идентификатор вопроса';
+COMMENT ON COLUMN testquestion.sign_right IS 'На вапрос дан правильный ответ';
+
+
+-- tests definition
+
+-- Drop table
+
+-- DROP TABLE tests;
+
+create TABLE IF NOT EXISTS tests (
+	test_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идентификатор тестирования
+	student_id int4 NOT NULL, -- Участник тестирования
+	date_start date NOT NULL, -- Дата и время начала тестирования
+	date_finish date NULL, -- Дата и время окончания тестирования
+	theme_id int4 NOT NULL, -- Тема теста
+	CONSTRAINT tests_pk PRIMARY KEY (test_id)
+);
+COMMENT ON TABLE tests IS 'Тестирование';
+
+-- Column comments
+
+COMMENT ON COLUMN tests.test_id IS 'Идентификатор тестирования';
+COMMENT ON COLUMN tests.student_id IS 'Участник тестирования';
+COMMENT ON COLUMN tests.date_start IS 'Дата и время начала тестирования';
+COMMENT ON COLUMN tests.date_finish IS 'Дата и время окончания тестирования';
+COMMENT ON COLUMN tests.theme_id IS 'Тема теста';
+
+
+-- testquestion foreign keys
+
+ALTER TABLE testquestion ADD CONSTRAINT testquestion_fk FOREIGN KEY (test_id) REFERENCES tests(test_id);
+ALTER TABLE testquestion ADD CONSTRAINT testquestion_question_fk FOREIGN KEY (question_id) REFERENCES questions(question_id);
+
+
+-- tests foreign keys
+
+ALTER TABLE tests ADD CONSTRAINT tests_student_fk FOREIGN KEY (student_id) REFERENCES students(student_id);
+ALTER TABLE tests ADD CONSTRAINT tests_theme_fk FOREIGN KEY (theme_id) REFERENCES themes(theme_id);
