@@ -1,4 +1,4 @@
-package ru.plastinin.petproject.stafftesting.model;
+package ru.plastinin.petproject.stafftesting.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -6,13 +6,8 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
-/**
- * Направление тестирования (подготовки)
- *
- */
-
 @Data
-public class Direction {
+public class DirectionDto {
     private Long directionId;
     @NotBlank(message = "Наименование не может быть пустым или содержать пробелы")
     private String name;

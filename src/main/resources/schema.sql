@@ -152,29 +152,6 @@ COMMENT ON COLUMN students.datebirth IS 'Дата рождения';
 COMMENT ON COLUMN students.gender IS 'Пол: 0-не задан; 1-муж; 2-жен';
 
 
--- testquestion definition
-
--- Drop table
-
--- DROP TABLE testquestion;
-
-create TABLE IF NOT EXISTS testquestion (
-	testquestion_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идентификатор вопроса в тесте
-	test_id int4 NOT NULL, -- Идентификатор теста
-	question_id int4 NOT NULL, -- Идентификатор вопроса
-	sign_right bool NOT NULL DEFAULT false, -- На вапрос дан правильный ответ
-	CONSTRAINT testquestion_pk PRIMARY KEY (testquestion_id)
-);
-COMMENT ON TABLE testquestion IS 'Вопросы в тесте';
-
--- Column comments
-
-COMMENT ON COLUMN testquestion.testquestion_id IS 'Идентификатор вопроса в тесте';
-COMMENT ON COLUMN testquestion.test_id IS 'Идентификатор теста';
-COMMENT ON COLUMN testquestion.question_id IS 'Идентификатор вопроса';
-COMMENT ON COLUMN testquestion.sign_right IS 'На вапрос дан правильный ответ';
-
-
 -- tests definition
 
 -- Drop table
@@ -187,7 +164,9 @@ create TABLE IF NOT EXISTS tests (
 	date_start date NOT NULL, -- Дата и время начала тестирования
 	date_finish date NULL, -- Дата и время окончания тестирования
 	theme_id int4 NOT NULL, -- Тема теста
-	CONSTRAINT tests_pk PRIMARY KEY (test_id)
+	CONSTRAINT tests_pk PRIMARY KEY (test_id),
+	CONSTRAINT tests_student_fk FOREIGN KEY (student_id) REFERENCES students(student_id),
+	CONSTRAINT tests_theme_fk FOREIGN KEY (theme_id) REFERENCES themes(theme_id)
 );
 COMMENT ON TABLE tests IS 'Тестирование';
 
@@ -200,13 +179,26 @@ COMMENT ON COLUMN tests.date_finish IS 'Дата и время окончани�
 COMMENT ON COLUMN tests.theme_id IS 'Тема теста';
 
 
--- testquestion foreign keys
+-- stafftesting.testquestion definition
 
-ALTER TABLE testquestion ADD CONSTRAINT testquestion_fk FOREIGN KEY (test_id) REFERENCES tests(test_id);
-ALTER TABLE testquestion ADD CONSTRAINT testquestion_question_fk FOREIGN KEY (question_id) REFERENCES questions(question_id);
+-- Drop table
 
+-- DROP TABLE testquestion;
 
--- tests foreign keys
+CREATE TABLE IF NOT EXISTS testquestion (
+	testquestion_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идентификатор вопроса в тесте
+	test_id int4 NOT NULL, -- Идентификатор теста
+	question_id int4 NOT NULL, -- Идентификатор вопроса
+	sign_right bool NOT NULL DEFAULT false, -- На вапрос дан правильный ответ
+	CONSTRAINT testquestion_pk PRIMARY KEY (testquestion_id),
+	CONSTRAINT testquestion_fk FOREIGN KEY (test_id) REFERENCES tests(test_id),
+	CONSTRAINT testquestion_question_fk FOREIGN KEY (question_id) REFERENCES questions(question_id)
+);
+COMMENT ON TABLE testquestion IS 'Вопросы в тесте';
 
-ALTER TABLE tests ADD CONSTRAINT tests_student_fk FOREIGN KEY (student_id) REFERENCES students(student_id);
-ALTER TABLE tests ADD CONSTRAINT tests_theme_fk FOREIGN KEY (theme_id) REFERENCES themes(theme_id);
+-- Column comments
+
+COMMENT ON COLUMN testquestion.testquestion_id IS 'Идентификатор вопроса в тесте';
+COMMENT ON COLUMN testquestion.test_id IS 'Идентификатор теста';
+COMMENT ON COLUMN testquestion.question_id IS 'Идентификатор вопроса';
+COMMENT ON COLUMN testquestion.sign_right IS 'На вапрос дан правильный ответ';

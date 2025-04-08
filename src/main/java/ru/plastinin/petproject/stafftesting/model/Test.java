@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @Data
 public class Test {
     private Long testId;
-    private Long studentId;
+    private Student student;
     private LocalDateTime dateStart;
     private LocalDateTime dateFinish;
-    private Long themeId;
+    private Theme theme;
 }

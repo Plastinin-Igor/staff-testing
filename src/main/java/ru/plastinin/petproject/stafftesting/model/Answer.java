@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Answer {
     private Long answerId;
-    private Long questionId;
+    private Question question;
     private String content;
     private boolean signRight;
 }

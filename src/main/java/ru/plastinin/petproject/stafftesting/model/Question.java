@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Question {
     private Long questionId;
-    private Long themeId;
+    private Theme theme;
     private int curNumber;
     private String content;
     private String helpText;

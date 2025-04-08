@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class Theme {
     private Long themeId;
-    private Long directionId;
+    private Direction direction;
     private String name;
     private boolean signBlock;
 }
