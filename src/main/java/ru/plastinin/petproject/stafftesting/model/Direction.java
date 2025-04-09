@@ -2,7 +2,7 @@ package ru.plastinin.petproject.stafftesting.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +12,9 @@ import java.time.LocalDate;
  */
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Direction {
     private Long directionId;
     @NotBlank(message = "Наименование не может быть пустым или содержать пробелы")
