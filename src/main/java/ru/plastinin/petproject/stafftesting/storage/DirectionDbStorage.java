@@ -8,8 +8,6 @@ import ru.plastinin.petproject.stafftesting.exception.NotFoundException;
 import ru.plastinin.petproject.stafftesting.model.Direction;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @Slf4j
@@ -78,6 +76,5 @@ public class DirectionDbStorage extends BaseDbStorage<Direction> implements Dire
             throw e;
         }
     }
-
 
 }

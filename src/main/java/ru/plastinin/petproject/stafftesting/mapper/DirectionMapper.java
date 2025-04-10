@@ -1,13 +1,13 @@
 package ru.plastinin.petproject.stafftesting.mapper;
 
 
-import ru.plastinin.petproject.stafftesting.dto.DirectionDto;
+import ru.plastinin.petproject.stafftesting.dto.DirectionResponseDto;
 import ru.plastinin.petproject.stafftesting.dto.DirectionUpdateDto;
 import ru.plastinin.petproject.stafftesting.model.Direction;
 
 public final class DirectionMapper {
-    public static DirectionDto modelToDto(Direction direction) {
-        DirectionDto dto = new DirectionDto();
+    public static DirectionResponseDto modelToDto(Direction direction) {
+        DirectionResponseDto dto = new DirectionResponseDto();
         dto.setDirectionId(direction.getDirectionId());
         dto.setName(direction.getName());
         dto.setDescription(direction.getDescription());
@@ -16,7 +16,7 @@ public final class DirectionMapper {
         return dto;
     }
 
-    public static Direction dtoToModel(DirectionDto dto) {
+    public static Direction dtoToModel(DirectionResponseDto dto) {
         Direction direction = new Direction();
         direction.setDirectionId(dto.getDirectionId());
         direction.setName(dto.getName());

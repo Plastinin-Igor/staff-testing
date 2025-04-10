@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ThemeUpdateDto {
     private Long themeId;
-    private DirectionDto direction;
+    private DirectionResponseDto direction;
     private String name;
     private boolean signBlock;
 

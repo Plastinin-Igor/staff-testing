@@ -7,7 +7,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Data
-public class DirectionDto {
+public class DirectionResponseDto {
     private Long directionId;
     @NotBlank(message = "Наименование не может быть пустым или содержать пробелы")
     private String name;

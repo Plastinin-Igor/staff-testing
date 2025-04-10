@@ -3,9 +3,9 @@ package ru.plastinin.petproject.stafftesting.dto;
 import lombok.Data;
 
 @Data
-public class ThemeInsertDto {
+public class ThemeResponseDto {
     private Long themeId;
-    private Long direction;
+    private DirectionResponseDto direction;
     private String name;
     private boolean signBlock;
 }

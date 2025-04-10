@@ -27,12 +27,12 @@ public class QuestionService {
     private ThemeDbStorage themeDbStorage;
 
     //D I R E C T I ON
-    public DirectionDto addDirection(DirectionDto directionDto) {
-        Direction direction = DirectionMapper.dtoToModel(directionDto);
+    public DirectionResponseDto addDirection(DirectionResponseDto directionResponseDto) {
+        Direction direction = DirectionMapper.dtoToModel(directionResponseDto);
         return DirectionMapper.modelToDto(directionDbStorage.addDirection(direction));
     }
 
-    public DirectionDto updateDirection(DirectionUpdateDto updateDto) {
+    public DirectionResponseDto updateDirection(DirectionUpdateDto updateDto) {
         directionExists(updateDto.getDirectionId());
         Direction direction = directionDbStorage.directionById(updateDto.getDirectionId());
         direction = DirectionMapper.updateDirection(direction, updateDto);
@@ -45,14 +45,14 @@ public class QuestionService {
         directionDbStorage.deleteDirection(directionId);
     }
 
-    public Collection<DirectionDto> allDirection() {
+    public Collection<DirectionResponseDto> allDirection() {
         return directionDbStorage.allDirection()
                 .stream()
                 .map(DirectionMapper::modelToDto)
                 .collect(Collectors.toList());
     }
 
-    public DirectionDto directionById(Long directionId) {
+    public DirectionResponseDto directionById(Long directionId) {
         return DirectionMapper.modelToDto(directionDbStorage.directionById(directionId));
     }
 
@@ -62,38 +62,5 @@ public class QuestionService {
             throw new NotFoundException("Направление с id " + directionId + " не найдено в системе.");
         }
     }
-
-    //T H E M E
-    public ThemeDto addTheme(ThemeInsertDto themeDto) {
-        Direction direction = directionDbStorage.directionById(themeDto.getDirection());
-        Theme theme = ThemeMapper.insertTheme(themeDto);
-        theme.setDirection(direction);
-        return ThemeMapper.modelToDto(themeDbStorage.addTheme(theme));
-    }
-
-    public ThemeDto updateTheme(ThemeUpdateDto updateDto) {
-        //TODO добавить exists
-        Theme theme = themeDbStorage.themeById(updateDto.getThemeId());
-        theme = ThemeMapper.updateTheme(theme, updateDto);
-        theme = themeDbStorage.updateTheme(theme);
-        return ThemeMapper.modelToDto(theme);
-    }
-
-    public void deleteTheme(Long themeId) {
-        themeDbStorage.themeById(themeId);
-        themeDbStorage.deleteTheme(themeId);
-    }
-
-    public Collection<ThemeDto> allTheme() {
-        return themeDbStorage.allTheme()
-                .stream()
-                .map(ThemeMapper::modelToDto)
-                .collect(Collectors.toList());
-    }
-
-    public ThemeDto themeById(Long themeId) {
-        return ThemeMapper.modelToDto(themeDbStorage.themeById(themeId));
-    }
-
 
 }

@@ -1,14 +1,14 @@
 package ru.plastinin.petproject.stafftesting.mapper;
 
-import ru.plastinin.petproject.stafftesting.dto.ThemeDto;
-import ru.plastinin.petproject.stafftesting.dto.ThemeInsertDto;
+import ru.plastinin.petproject.stafftesting.dto.ThemeResponseDto;
+import ru.plastinin.petproject.stafftesting.dto.ThemeCreateDto;
 import ru.plastinin.petproject.stafftesting.dto.ThemeUpdateDto;
 import ru.plastinin.petproject.stafftesting.model.Theme;
 
 public final class ThemeMapper {
 
-    public static ThemeDto modelToDto(Theme theme) {
-        ThemeDto dto = new ThemeDto();
+    public static ThemeResponseDto modelToDto(Theme theme) {
+        ThemeResponseDto dto = new ThemeResponseDto();
         dto.setThemeId(theme.getThemeId());
         dto.setDirection(theme.getDirection() != null ? DirectionMapper.modelToDto(theme.getDirection()) : null);
         dto.setName(theme.getName());
@@ -17,7 +17,7 @@ public final class ThemeMapper {
         return dto;
     }
 
-    public static Theme dtoToModel(ThemeDto dto) {
+    public static Theme dtoToModel(ThemeResponseDto dto) {
         Theme theme = new Theme();
         theme.setDirection(dto.getDirection() != null ? DirectionMapper.dtoToModel(dto.getDirection()) : null);
         theme.setName(dto.getName());
@@ -37,7 +37,7 @@ public final class ThemeMapper {
         return theme;
     }
 
-    public static Theme insertTheme(ThemeInsertDto insertDto) {
+    public static Theme insertTheme(ThemeCreateDto insertDto) {
         Theme theme = new Theme();
 //        theme.setDirection(Direction
 //                .builder()
