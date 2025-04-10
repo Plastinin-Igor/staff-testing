@@ -1,5 +1,6 @@
 package ru.plastinin.petproject.stafftesting.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,11 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class ThemeService {
 
-    @Autowired
-    private DirectionDbStorage directionDbStorage;
-    @Autowired
-    private ThemeDbStorage themeDbStorage;
+    private final DirectionDbStorage directionDbStorage;
+    private final ThemeDbStorage themeDbStorage;
 
     public ThemeResponseDto addTheme(ThemeCreateDto themeDto) {
         Direction direction = directionDbStorage.directionById(themeDto.getDirection());

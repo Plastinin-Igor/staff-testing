@@ -3,51 +3,52 @@ package ru.plastinin.petproject.stafftesting.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.plastinin.petproject.stafftesting.dto.*;
+import ru.plastinin.petproject.stafftesting.dto.QuestionCreateDto;
+import ru.plastinin.petproject.stafftesting.dto.QuestionResponseDto;
+import ru.plastinin.petproject.stafftesting.dto.QuestionUpdateDto;
 import ru.plastinin.petproject.stafftesting.service.QuestionService;
 
 import java.util.Collection;
 
-@Slf4j
-@Validated
 @RestController
+@Slf4j
+@Valid
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class QuestionController {
+
     private final QuestionService questionService;
 
-    @PostMapping("direction")
-    public DirectionResponseDto addDirection(@Valid @RequestBody DirectionResponseDto directionResponseDto) {
-        log.info("Добавление направления {}.", directionResponseDto.getName());
-        return questionService.addDirection(directionResponseDto);
+    @PostMapping("question")
+    public QuestionResponseDto addQuestion(@Valid @RequestBody QuestionCreateDto createDto) {
+        log.info("Добавление вопроса c id: {}.", createDto.getQuestionId());
+        return questionService.addQuestion(createDto);
     }
 
-    @PutMapping("direction")
-    public DirectionResponseDto updateDirection(@Valid @RequestBody DirectionUpdateDto directionUpdateDto) {
-        log.info("Обновление направления {} с id: {}.", directionUpdateDto.getName(),
-                directionUpdateDto.getDirectionId());
-        return questionService.updateDirection(directionUpdateDto);
+    @PutMapping("question")
+    public QuestionResponseDto updateQuestion(@Valid @RequestBody QuestionUpdateDto updateDto) {
+        log.info("Обновление вопроса с id: {}.", updateDto.getQuestionId());
+        return questionService.updateQuestion(updateDto);
     }
 
-    @DeleteMapping("direction/{directionId}")
-    public void deleteDirection(@PathVariable Long directionId) {
-        log.info("Удаление направления с id: {}.", directionId);
-        questionService.deleteDirection(directionId);
+    @DeleteMapping("question/{questionId}")
+    public void deleteQuestion(@PathVariable Long questionId) {
+        log.info("Удаление вопроса с id: {}.", questionId);
+        questionService.deleteQuestion(questionId);
     }
 
-    @GetMapping("directions")
-    public Collection<DirectionResponseDto> allDirection() {
-        log.info("Выполнен запрос к списку направлений.");
-        return questionService.allDirection();
+    @GetMapping("question")
+    public Collection<QuestionResponseDto> allQuestion() {
+        log.info("Выполнен запрос к списку вопросов.");
+        return questionService.allQuestion();
     }
 
-    @GetMapping("direction/{directionId}")
-    public DirectionResponseDto directionById(@PathVariable Long directionId) {
-        log.info("Выполнен запрос к направлению с id: {}", directionId);
-        return questionService.directionById(directionId);
+    @GetMapping("question/{questionId}")
+    public QuestionResponseDto questionById(@PathVariable Long questionId) {
+        log.info("Выполнен запрос к вопросу с id: {}.", questionId);
+        return questionService.questionById(questionId);
     }
-
 
 }

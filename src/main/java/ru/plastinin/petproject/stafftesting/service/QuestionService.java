@@ -1,66 +1,56 @@
 package ru.plastinin.petproject.stafftesting.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.plastinin.petproject.stafftesting.dto.*;
-import ru.plastinin.petproject.stafftesting.exception.NotFoundException;
-import ru.plastinin.petproject.stafftesting.mapper.ThemeMapper;
-import ru.plastinin.petproject.stafftesting.model.Direction;
+import ru.plastinin.petproject.stafftesting.dto.QuestionCreateDto;
+import ru.plastinin.petproject.stafftesting.dto.QuestionResponseDto;
+import ru.plastinin.petproject.stafftesting.dto.QuestionUpdateDto;
+import ru.plastinin.petproject.stafftesting.mapper.QuestionMapper;
+import ru.plastinin.petproject.stafftesting.model.Question;
 import ru.plastinin.petproject.stafftesting.model.Theme;
-import ru.plastinin.petproject.stafftesting.storage.DirectionDbStorage;
-import ru.plastinin.petproject.stafftesting.mapper.DirectionMapper;
+import ru.plastinin.petproject.stafftesting.storage.QuestionDbStorage;
 import ru.plastinin.petproject.stafftesting.storage.ThemeDbStorage;
-
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class QuestionService {
-    @Autowired
-    private DirectionDbStorage directionDbStorage;
-    @Autowired
-    private ThemeDbStorage themeDbStorage;
 
-    //D I R E C T I ON
-    public DirectionResponseDto addDirection(DirectionResponseDto directionResponseDto) {
-        Direction direction = DirectionMapper.dtoToModel(directionResponseDto);
-        return DirectionMapper.modelToDto(directionDbStorage.addDirection(direction));
+    private final QuestionDbStorage questionDbStorage;
+    private final ThemeDbStorage themeDbStorage;
+
+    public QuestionResponseDto addQuestion(QuestionCreateDto questionCreateDto) {
+        Theme theme = themeDbStorage.themeById(questionCreateDto.getTheme());
+        Question question = QuestionMapper.createDto(questionCreateDto);
+        question.setTheme(theme);
+        question = questionDbStorage.addQuestion(question);
+        return QuestionMapper.modelToDto(question);
     }
 
-    public DirectionResponseDto updateDirection(DirectionUpdateDto updateDto) {
-        directionExists(updateDto.getDirectionId());
-        Direction direction = directionDbStorage.directionById(updateDto.getDirectionId());
-        direction = DirectionMapper.updateDirection(direction, updateDto);
-        direction = directionDbStorage.updateDirection(direction);
-        return DirectionMapper.modelToDto(direction);
+    public QuestionResponseDto updateQuestion(QuestionUpdateDto questionUpdateDto) {
+        Question question = questionDbStorage.questionById(questionUpdateDto.getQuestionId());
+        question = QuestionMapper.updateDto(question, questionUpdateDto);
+        question = questionDbStorage.updateQuestion(question);
+        return QuestionMapper.modelToDto(question);
     }
 
-    public void deleteDirection(Long directionId) {
-        directionExists(directionId);
-        directionDbStorage.deleteDirection(directionId);
+    public void deleteQuestion(Long questionId) {
+        questionDbStorage.questionById(questionId);
+        questionDbStorage.deleteQuestion(questionId);
     }
 
-    public Collection<DirectionResponseDto> allDirection() {
-        return directionDbStorage.allDirection()
+    public Collection<QuestionResponseDto> allQuestion() {
+        return questionDbStorage.allQuestion()
                 .stream()
-                .map(DirectionMapper::modelToDto)
+                .map(QuestionMapper::modelToDto)
                 .collect(Collectors.toList());
     }
 
-    public DirectionResponseDto directionById(Long directionId) {
-        return DirectionMapper.modelToDto(directionDbStorage.directionById(directionId));
+    public QuestionResponseDto questionById(Long questionId) {
+        Question question = questionDbStorage.questionById(questionId);
+        return QuestionMapper.modelToDto(question);
     }
-
-    private void directionExists(Long directionId) {
-        if (directionDbStorage.directionById(directionId) == null) {
-            log.error("Направление с id {} не найдено в системе.", directionId);
-            throw new NotFoundException("Направление с id " + directionId + " не найдено в системе.");
-        }
-    }
-
 }

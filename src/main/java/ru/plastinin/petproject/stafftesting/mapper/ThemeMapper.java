@@ -39,10 +39,6 @@ public final class ThemeMapper {
 
     public static Theme insertTheme(ThemeCreateDto insertDto) {
         Theme theme = new Theme();
-//        theme.setDirection(Direction
-//                .builder()
-//                .directionId(insertDto.getDirection())
-//                .build());
         theme.setName(insertDto.getName());
         theme.setSignBlock(insertDto.isSignBlock());
         return theme;

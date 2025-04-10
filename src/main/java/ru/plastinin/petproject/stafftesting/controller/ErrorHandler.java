@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import ru.plastinin.petproject.stafftesting.exception.InternalServerException;
+import ru.plastinin.petproject.stafftesting.exception.JdbcSQLDataException;
 import ru.plastinin.petproject.stafftesting.exception.ValidationException;
 import ru.plastinin.petproject.stafftesting.model.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handlNotFound(final NotFoundException e) {
+    public ErrorResponse handleNotFound(final NotFoundException e) {
         return new ErrorResponse(e.getMessage());
     }
 
@@ -47,6 +49,25 @@ public class ErrorHandler {
                 .collect(Collectors.toList());
         log.warn("Валидация: {} ", errorMessages);
         return new ErrorResponse(errorMessages.get(0));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleInternalError(InternalServerException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleJdbcSQLDataException(JdbcSQLDataException e) {
+        return new ErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleException(final Exception e) {
+        log.warn("Error exception: ", e);
+        return new ErrorResponse("Произошла непредвиденная ошибка Exception: " + e.getMessage());
     }
 
 }

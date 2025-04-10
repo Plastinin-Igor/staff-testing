@@ -39,7 +39,7 @@ public class ThemeController {
         themeService.deleteTheme(themeId);
     }
 
-    @GetMapping("themes")
+    @GetMapping("theme")
     public Collection<ThemeResponseDto> allTheme() {
         log.info("Выполнен запрос к списку тем.");
         return themeService.allTheme();

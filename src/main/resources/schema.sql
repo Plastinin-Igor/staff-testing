@@ -59,9 +59,9 @@ create TABLE IF NOT EXISTS questions (
 	question_id int4 NOT NULL GENERATED ALWAYS AS IDENTITY, -- Идентификатор вопроса
 	theme_id int4 NOT NULL, -- Тема
 	cur_number int4 NOT NULL, -- Номер вопроса в теме
-	contetnt varchar(450) NOT NULL, -- Содержание вопроса
+	content varchar(450) NOT NULL, -- Содержание вопроса
 	help_text varchar(450) NULL, -- Подсказка
-	CONSTRAINT questions_contetnt_uk UNIQUE (theme_id, contetnt),
+	CONSTRAINT questions_content_uk UNIQUE (theme_id, content),
 	CONSTRAINT questions_pk PRIMARY KEY (question_id),
 	CONSTRAINT questions_uk UNIQUE (theme_id, cur_number),
 	CONSTRAINT questions_fk FOREIGN KEY (theme_id) REFERENCES themes(theme_id)
@@ -73,7 +73,7 @@ COMMENT ON TABLE questions IS 'Вопросы';
 COMMENT ON COLUMN questions.question_id IS 'Идентификатор вопроса';
 COMMENT ON COLUMN questions.theme_id IS 'Тема';
 COMMENT ON COLUMN questions.cur_number IS 'Номер вопроса в теме';
-COMMENT ON COLUMN questions.contetnt IS 'Содержание вопроса';
+COMMENT ON COLUMN questions.content IS 'Содержание вопроса';
 COMMENT ON COLUMN questions.help_text IS 'Подсказка';
 
 
