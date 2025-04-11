@@ -1,12 +1,15 @@
 package ru.plastinin.petproject.stafftesting.model;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * Вопрос
  */
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Question {
     private Long questionId;
     private Theme theme;
